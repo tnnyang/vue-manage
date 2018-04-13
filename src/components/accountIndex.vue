@@ -61,7 +61,7 @@
 	  <div class="index-record">
 		  <h4 class="sub-header" style="margin:30px 20px 20px;">订单记录 <small class="pull-right"><router-link to="/orderRecord">查看更多</router-link></small></h4>
 		  <div class="table-responsive">
-		    <table class="table">
+		    <table class="table" :class="{'noborder':!recordShow}">
 		      <thead>
 		        <tr>
 		          <th>订单号</th>
@@ -70,21 +70,29 @@
 		          <th>单价</th>
 		          <th>类型</th>
 		          <th>状态</th>
-		          <th></th>
+		          <th>操作</th>
 		        </tr>
 		      </thead>
-		      <tbody v-show="recordShow">
-		        <tr v-for="item in orderRecord">
+		      <tbody>
+		        <tr v-for="item in orderRecord" v-show="recordShow">
 		          <td>{{item.orderNo}}</td>
 		          <td>{{item.orderCustCompoundName}}</td>
 		          <td>{{item.createTime}}</td>
 		          <td>0</td>
 		          <td>{{item.modelName}}</td>
-		          <td>{{item.orderState}}</td>
+		          <td>
+						<span v-if="item.orderState == 1">新建</span>
+						<span v-else-if="item.orderState == 2">待分配</span>
+						<span v-else-if="item.orderState == 3">待下户</span>
+						<span v-else-if="item.orderState == 4">下户中</span>
+						<span v-else-if="item.orderState == 5">待终审</span>
+						<span v-else-if="item.orderState == 6">完成</span>
+						<span v-else="item.orderState == 7">废弃</span>
+		          </td>
 		          <td><router-link :to="'/overDetail/' + item.id">查看</router-link></td>
 		        </tr>
+		        <tr v-show="noDataShow"><td colspan="7" style="padding:50px 0 50px;">暂无数据</td></tr>
 		      </tbody>
-		      <p style="text-align:center;margin-top:100px;" v-show="noDataShow">暂无数据</p>
 		    </table>
 		  </div>
 	  </div>

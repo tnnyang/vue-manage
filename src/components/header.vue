@@ -6,9 +6,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
           <ul class="nav navbar-nav navbar-right">
-            <li><router-link to="/childAccountDetail">子账户信息</router-link></li>
-            <li><router-link to="/accountInfor">账户信息</router-link></li>
-            <li><router-link to="/bindWechat">绑定微信</router-link></li>
+            <li><router-link to="/childAccountDetail" v-if="childAccount">子账户信息</router-link></li>
+            <li><router-link to="/accountInfor" v-if="childAccount">账户信息</router-link></li>
+            <!-- <li><router-link to="/bindWechat">绑定微信</router-link></li> -->
             <li><a href="javascript:;" @click="editPwd">修改密码</a></li>
             <li><a href="javascript:;" @click="logout">退出</a></li>
           </ul>
@@ -21,14 +21,19 @@
   export default {
     data(){
       return {
-        account: 0
+        account: 0,
+        childAccount: false
       }
     },
     mounted(){
       //获取用户账户余额
       util.apiPost(api + "/user/info").then(res => {
         if(res.code == 0){
-          this.account = res.data.user.account;
+          let userInfo = res.data.user;
+          this.account = userInfo.account;
+          if(userInfo.parentId == 0){
+            this.childAccount = true;
+          }
         }
       });
     },

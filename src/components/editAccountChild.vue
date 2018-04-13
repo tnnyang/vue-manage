@@ -39,7 +39,7 @@
 <script>
 import top from '@/components/header'
 import sliderBar from '@/components/slidebar'
-import * as validateFun from '../util/validate'
+import * as validateFun from '../assets/js/validate'
 
 export default {
   data () {

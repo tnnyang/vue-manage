@@ -9,7 +9,7 @@
                 <p class="form-control-static">{{userName}}</p>
               </div>
               <div class="col-sm-3 infor_hand">
-                  <router-link to="/bindWechat">绑定微信</router-link>
+                  <!-- <router-link to="/bindWechat">绑定微信</router-link> -->
                   <a href="javascript:;" @click="editPwd" class="forgetPass">修改密码</a>
               </div>
             </div>
@@ -39,7 +39,7 @@
 <script>
 import top from '@/components/header'
 import sliderBar from '@/components/slidebar'
-import * as validateFun from '../util/validate'
+import * as validateFun from '../assets/js/validate'
 
 export default {
   data () {
@@ -105,6 +105,6 @@ export default {
 <style scoped>
 .infor_hand{padding:7px 0;}
 .infor_hand a{padding:0 12px;color:#333;float:right;}
-.infor_hand .forgetPass{border-right:1px solid #333;}
+/*.infor_hand .forgetPass{border-right:1px solid #333;}*/
 .forgetPass:hover{text-decoration:none;}  
 </style>

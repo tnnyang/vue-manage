@@ -17,7 +17,7 @@
       <button type="button" class="btn btn-default yellow-bg" @click="search">查询</button>
     </form>
     <div class="table-responsive" style="margin-top:30px;">
-      <table class="table">
+      <table class="table" :class="{'noborder':!recordShow}">
         <thead>
           <tr>
             <th>用户名</th>
@@ -26,11 +26,11 @@
             <th>邮箱</th>
             <th>状态</th>
             <th>最后一次登录时间</th>
-            <th></th>
+            <th>操作</th>
           </tr>
         </thead>
-        <tbody v-show="recordShow" ref="subUserlist">
-          <tr v-for="(item, index) in subUserInfo">
+        <tbody ref="subUserlist">
+          <tr v-for="(item, index) in subUserInfo" v-show="recordShow">
             <td>{{item.username}}</td>
             <td>{{item.name}}</td>
             <td>{{item.mobile}}</td>
@@ -39,8 +39,8 @@
             <td>{{item.lastLogin}}</td>
             <td><span class="status-ctrl" @click="doStatus($event, item.userId)">{{item.status == 1 ? "锁定" : "正常"}} | </span><router-link :to="'/editAccountChild/'+ item.userId">修改</router-link></td>
           </tr>
+          <tr v-show="noDataShow"><td colspan="7" style="padding:50px 0 50px;">暂无数据</td></tr>
         </tbody>
-        <p style="text-align:center;margin-top:100px;font-size:18px;" v-show="noDataShow">暂无数据</p>
       </table>      
     </div>
     <pagination :total="total" :current-page='pageIndex' :page-size="pageSize" @pageChange="getChildDetail" v-if="pageShow"></pagination>

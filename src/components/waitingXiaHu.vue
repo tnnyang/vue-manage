@@ -2,12 +2,12 @@
 	<div class="col-sm-9 main">
     <h3 class="main-title">待下户</h3>
     <form class="form-inline">
-      <div class="form-group">
-        <input type="datetime-local" class="form-control" v-model="beginTime">
+      <div class="form-group" style="width:22.5%;">
+        <input type="text" class="form-control datetime" style="width:100%;" v-model="beginTime" @click="chooseBeginDate">
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-left:5px;width:25%;">
         <label>至</label>
-        <input type="datetime-local" class="form-control" v-model="endTime">
+        <input type="text" class="form-control datetime" style="margin-left:5px;width:90%;" v-model="endTime" @click="chooseEndDate">
       </div>
       <div class="form-group" style="width:15%;">
         <input type="text" class="form-control" placeholder="请输入小区名" v-model="community" style="width:100%;">
@@ -18,13 +18,13 @@
           <option v-for="item in typeOptions" :value="item.id">{{item.modelName}}</option>
         </select>
       </div>
-      <div class="form-group" style="width:15%;">
+      <div class="form-group" style="width:14%;">
         <input type="text" class="form-control" placeholder="请输入订单号" v-model="orderNumber" style="width:100%;">
       </div>
       <button type="button" class="btn btn-default yellow-bg" @click="search">查询</button>
     </form>
-    <div class="table-responsive" style="margin-top:30px;" ref="record">
-      <table class="table" v-show="recordShow">
+    <div class="table-responsive" style="margin-top:30px;">
+      <table class="table" :class="{'noborder':!recordShow}">
         <thead>
           <tr>
             <th>订单号</th>
@@ -32,20 +32,20 @@
             <th>下单时间</th>
             <th>下户预约时间</th>
             <th>类型</th>
-            <th></th>
+            <th>操作</th>
           </tr>
         </thead>
-        <tbody v-show="recordShow">
-          <tr v-for="item in orderRecord">
+        <tbody>
+          <tr v-for="item in orderRecord" v-show="recordShow">
             <td>{{item.orderNo}}</td>
             <td>{{item.orderCustCompoundName}}</td>
             <td>{{item.createTime}}</td>
             <td>{{item.orderCustTime}}</td>
             <td>{{item.modelName}}</td>
             <td><router-link :to="'/waitingXiaHuDetail/' + item.id">查看</router-link></td>
-          </tr>            
+          </tr>
+          <tr v-show="noDataShow"><td colspan="6" style="padding:50px 0 50px;">暂无数据</td></tr>        
         </tbody>
-        <p style="text-align:center;margin-top:100px;" v-show="noDataShow">暂无数据</p>
       </table>      
     </div>
     <pagination :total="total" :current-page='pageIndex' :page-size="pageSize" @pageChange="getOrderRecord" v-if="pageShow"></pagination>
@@ -56,6 +56,9 @@
 import top from '@/components/header'
 import sliderBar from '@/components/slidebar'
 import pagination from '@/components/pagination'
+import '../assets/js/laydate'
+import '../assets/css/laydate/css/laydate.css'
+import '../assets/css/laydate/css/skin.laydate.css'
 
 export default {
   data () {
@@ -120,6 +123,24 @@ export default {
     search(){
       this.getOrderRecord();
       this.$store.dispatch('curPage');   //改变curPage的状态，若当前不是处于分页的第一页时在点击搜索按钮时能使分页及时回到第一页
+    },
+    chooseBeginDate(){
+      laydate({
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss', 
+        choose: (dateTime) => {
+          this.beginTime = dateTime;
+        }
+      });
+    },
+    chooseEndDate(){
+      laydate({
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss', 
+        choose: (dateTime) => {
+          this.endTime = dateTime;
+        }
+      });
     }
   },
   components: {

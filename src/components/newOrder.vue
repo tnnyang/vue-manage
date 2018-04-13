@@ -2,15 +2,15 @@
   <div class="col-sm-9 main">
     <h3 class="main-title">新建订单</h3>
     <div class="row placeholders customer-inline">
-        <div class="col-sm-4">
+        <div class="col-sm-4" style="width:35%;">
           <label>下户预约时间</label>
-          <input type="datetime-local" class="form-control" v-model="reserveDate">
+          <input type="text" class="form-control datetime" v-model="reserveDate" @click="chooseDate">
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4" style="padding:0;width:32%;">
           <label>小区名称</label>
-          <input type="text" class="form-control" v-model="community" placeholder="小区名称">
+          <input type="text" class="form-control" v-model="community" placeholder="小区名称" style="width:58%;">
         </div>        
-        <div class="col-sm-4">
+        <div class="col-sm-4" style="padding:0;width:32%;">
           <label>下户类型</label>
               <select class="form-control" v-model="modelType">
                 <option value="">请选择类型</option>
@@ -19,10 +19,10 @@
         </div>
         <div class="col-sm-8">
           <label>下户地址</label>
-          <input type="text" id="suggestId" class="form-control" placeholder="下户地址" v-model="address" style="width:83%;">
+          <input type="text" id="suggestId" class="form-control" placeholder="下户地址" v-model="address" style="width:80.5%;">
         </div>
         <div class="col-sm-4">
-          <button type="button" class="btn btn-default yellow-bg" style="width:87%;margin-left:35px;" @click="createOrder">确定</button>
+          <button type="button" class="btn btn-default yellow-bg" style="width:83%;margin-left:40px;" @click="createOrder">确定</button>
         </div>
     </div>
     <div id="BMap"></div>
@@ -32,8 +32,11 @@
 <script>
 import top from '@/components/header'
 import sliderBar from '@/components/slidebar'
-import * as validateFun from '../util/validate'
-import {MP} from '../util/map'
+import * as validateFun from '../assets/js/validate'
+import '../assets/js/laydate'
+import '../assets/css/laydate/css/laydate.css'
+import '../assets/css/laydate/css/skin.laydate.css'
+import {MP} from '../assets/js/map'
 
 export default {
   data () {
@@ -129,9 +132,10 @@ export default {
         util.alertMsg("请输入下户类型");
         return false;
       }else{
-        let params = {reserveDate: this.reserveDate + " 00:00:00", community: this.community, province: this.cityInfo.province, city: this.cityInfo.city, county: this.cityInfo.district, address: this.address, longitude: this.userlocation.lng, latitude: this.userlocation.lat, modelType: this.modelType};
-
+        let params = {reserveDate: this.reserveDate, community: this.community, province: this.cityInfo.province, city: this.cityInfo.city, county: this.cityInfo.district, address: this.address, longitude: this.userlocation.lng, latitude: this.userlocation.lat, modelType: this.modelType};
+        console.log(params);
         util.apiPost(api + "/customer/createOrder", params).then(res => {
+          console.log(res);
           if(res.code == 0){
             this.reserveDate = "";
             this.community = "";
@@ -144,7 +148,16 @@ export default {
           }
         });
       }      
-    }
+    },
+    chooseDate(){
+      laydate({
+        istime: true,
+        format: 'YYYY-MM-DD hh:mm:ss', 
+        choose: (dateTime) => {
+          this.reserveDate = dateTime;
+        }
+      });
+    }    
   },
   components: {
     top,
@@ -154,4 +167,6 @@ export default {
 </script>
 <style scoped>
 #BMap{width:100%;height:580px;}
+.customer-inline{margin-left:0;}
+.col-sm-4, .col-sm-8{padding:0;}
 </style>

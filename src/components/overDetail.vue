@@ -25,7 +25,7 @@
           <div v-for="val in content.child">
             <ul v-for="v in val">
               <li v-if="v.type=='radio'">
-                <label style="margin:2px 10px 0 0;">{{v.filedName}}</label>
+                <label>{{v.filedName}}</label>
                 <span v-for="ck in v.options" style="margin-right:10px;">
                   <input type="radio" :name='v.filedUsName' disabled :checked="v.value.key == ck.key" :value="ck.key">{{ck.value}}
                 </span>
@@ -37,11 +37,9 @@
                 </select>
               </li>
               <li v-else-if="v.type=='checkbox'">
-                <label style="margin:0 10px 0 0;">{{v.filedName}}</label>
-                {{v.options}}<br><br>
-                {{v.value}}
+                <label style="margin-top:2px;">{{v.filedName}}</label>
                 <span v-for="ck in v.options">
-                  <input type="checkbox" v-for="n in v.value" disabled :name='v.filedUsName' :checked="ck.key == n.key" :value="ck.key">{{ck.value}}
+                  <input type="checkbox" disabled :name='v.filedUsName' v-model="v.value" :value="ck.key">{{ck.value}}
                 </span>
               </li>
               <li v-else-if="v.type=='txt'">
@@ -67,14 +65,9 @@
           </div>
         </div>
     </div>
-    <tr v-for="item in list">
-      <td>
-          <input type="checkbox" :value="item.value" v-model="item.checked" />
-      </td>
-  </tr>
     <div class="row finish_line" style="text-align:center;margin:30px 0 50px;">
-      <div class="col-sm-8">
-        <button type="button" class="btn btn-default yellow-bg" style="width:120px;" @click="overBtn">确认完成</button>
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-default yellow-bg" style="width:120px;" @click="overBtn">{{waitingSure}}</button>
       </div>
     </div>
   </div>
@@ -84,7 +77,7 @@
 export default {
   data () {
     return {
-      orderNo: 0,
+      orderNo: "",
       createTime: "",
       province: "",
       city: "",
@@ -92,7 +85,8 @@ export default {
       adress: "",
       detailTxt: [],
       detailPic: [],
-      list: [{checked:true,value:'a'},{checked:false,value:'b'},{checked:true,value:'b'}]
+      checkOptions: [],
+      waitingSure: "返回"
     }
   },
   watch: {
@@ -103,34 +97,33 @@ export default {
   mounted () {
     this.$nextTick(function(){
       this.getOrderDetail();
-    })    
+    })
   },
   methods: {
     getOrderDetail () {
       if(this.$route.params.id){
         util.apiPost(api + "/customer/getOrderDetail?orderId=" + this.$route.params.id).then(res => {
           if(res.code == 0){
-            let orderInfo = res.data.orderInfo;
-            let modelData = JSON.parse(res.data.modelData.modelData);
-            this.detailTxt = modelData.txt;
-            this.detailPic = modelData.pic;
-
+            let orderInfo = res.data.orderInfo;           
             this.orderNo = orderInfo.orderNo;
             this.createTime = orderInfo.createTime;
             this.province = orderInfo.orderCustProvince;
             this.city = orderInfo.orderCustCity;
             this.area = orderInfo.orderCustArea;
             this.adress = orderInfo.orderCustAddr;
+
+            if(orderInfo.orderState == 5){    //如果是待确认的状态，将按钮改为确认完成，目前没有接口，暂时都改成返回
+              this.waitingSure = "返回";
+            }
+
+            if(res.data.modelData != null && res.data.modelData != ""){
+              let modelData = JSON.parse(res.data.modelData.modelData);
+              this.detailTxt = modelData.txt;
+              this.detailPic = modelData.pic;
+            }
+            
           }
         });
-
-        // util.apiPost(api + "/model/all/detail?orderId=" + 5).then(res => {
-        //   if(res.code == 0){
-        //     let detail = res.data.structWithData;
-        //     this.detailTxt = detail.txt;
-        //     this.detailPic = detail.pic;
-        //   }         
-        // });
       }
     },
     overBtn(){
@@ -146,6 +139,8 @@ export default {
 .info li label{margin:6px 15px 0 0;float:left;width:100px;text-align:right;font-weight:normal;}
 .selected, .beizhu{width:50%;display:inline-block;}
 .info li input[type="radio"]{position:relative;top:2px;margin-right:5px;}
+.info li input[type="checkbox"]{position:relative;top:2px;margin:0 5px 0 15px;}
+.info li span:nth-child(2) input[type="checkbox"]{margin-left:0;}
 .finishImgs{padding:10px 0 0 15px;}
 .finishImgs img{width:120px;height:120px;margin:0 40px 20px 0;padding:0;border:none;border-radius:5px;}
 </style>

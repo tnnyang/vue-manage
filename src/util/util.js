@@ -1,4 +1,4 @@
-// const domain = 'http://10.1.0.176:8080/sv_pc/api';
+// const domain = 'http://10.1.0.49:8080/sv_pc/api';
 const domain = 'http://10.1.0.219:7073/sv_pc/api';
 import axios from 'axios';
 import store from '../vuex';
@@ -22,31 +22,35 @@ router.beforeEach((to, from, next) => {
 })
 
 //封装添加请求头token
-function sendToken(type){
-	//在请求或响应被 then 或 catch 处理前拦截。
-	let token = getCookie("token");
-	if(type == "login"){
-		token = "";
-	}
-
-	axios.interceptors.request.use(
-		config => {
-		    if(token){
-		        // 这里将token设置到headers中，header的key是token，这个key值根据你的需要进行修改即可
-		        config.headers.token = token;
-		    }
-		    return config;
-		},
-		error => {
-		    return Promise.reject(error);
-	});
-}
+// function sendToken(){
+// 	//在请求或响应被 then 或 catch 处理前拦截。
+// 	let token = getCookie("token");
+//     // axios.defaults.headers.common['token'] = token;
+// 	axios.interceptors.request.use(
+// 		config => {
+// 		    if(token){
+// 		        // 这里将token设置到headers中，header的key是token，这个key值根据你的需要进行修改即可
+// 		        config.headers.token = token;
+// 		    }
+// 		    return config;
+// 		},
+// 		error => {
+// 		    return Promise.reject(error);
+// 	});
+// }
 
 //封装axios post请求
 export function apiPost(url, data, type) {
-	sendToken(type);
+    let token = getCookie("token");
+    if(type != "login"){
+        // sendToken();
+        axios.defaults.headers.common['token'] = token;
+    }else{
+        axios.defaults.headers.common['token'] = "";
+    }
+	
     return new Promise((resolve, reject) => {
-        axios.post(url, data).then((res) => {
+        axios.post(url, data).then((res) => {            
             if(res.data.code == 401){
                 router.push('/login');
             }else{
