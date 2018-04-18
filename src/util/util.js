@@ -39,7 +39,7 @@ export function apiPost(url, data, type) {
 
     NProgress.start();  //数据加载时出现进度条
     return new Promise((resolve, reject) => {
-        axios.post(url, data).then((res) => {
+        axios.post(url, data, {timeout: 5000}).then((res) => {    //设置超时时间5秒
             NProgress.done();    //路由切换完成和数据加载完成后去掉进度条
             if(res.data.code == 401){
                 router.push('/login');
