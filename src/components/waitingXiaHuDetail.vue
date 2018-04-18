@@ -26,11 +26,11 @@ export default {
       modelName: ""
     }
   },
-  watch: {
-    '$route' () {
-      this.getOrderDetail();
-    }
-  },
+  // watch: {
+  //   '$route' () {
+  //     this.getOrderDetail();
+  //   }
+  // },
   mounted () {
     this.$nextTick(function(){
       this.getOrderDetail();

@@ -1,8 +1,10 @@
-// const domain = 'http://10.1.0.49:8080/sv_pc/api';
-const domain = 'http://10.1.0.219:7073/sv_pc/api';
-import axios from 'axios';
-import store from '../vuex';
+// const domain = 'http://10.1.0.219:7073/sv_pc/api';
+const domain = 'http://testxiahu.91zhaiquan.net:8085/sv_pc/api';
+import axios from 'axios'
+import store from '../vuex'
 import router from '../router'
+import NProgress from 'nprogress'  //路由切换或数据加载进度条
+NProgress.configure({showSpinner: false})   //禁用进度环
 
 export default {
   baseUrl: domain
@@ -10,7 +12,7 @@ export default {
 
 //导航钩子  判断是否登陆
 router.beforeEach((to, from, next) => {
-    if(getCookie("token")){
+    if(getCookie("token")){       
         next();
     }else{
         if(to.path == '/login'){  //如果是登录页面路径，就直接next()
@@ -18,39 +20,28 @@ router.beforeEach((to, from, next) => {
         }else{     //否则就跳转到登录
             next('/login');
         }
-    }     
+    }
+    NProgress.start();    //路由切换时出现进度条
 })
 
-//封装添加请求头token
-// function sendToken(){
-// 	//在请求或响应被 then 或 catch 处理前拦截。
-// 	let token = getCookie("token");
-//     // axios.defaults.headers.common['token'] = token;
-// 	axios.interceptors.request.use(
-// 		config => {
-// 		    if(token){
-// 		        // 这里将token设置到headers中，header的key是token，这个key值根据你的需要进行修改即可
-// 		        config.headers.token = token;
-// 		    }
-// 		    return config;
-// 		},
-// 		error => {
-// 		    return Promise.reject(error);
-// 	});
-// }
+//路由切换完成后去掉进度条
+// router.afterEach(transition => {
+//   NProgress.done();
+// });
 
 //封装axios post请求
 export function apiPost(url, data, type) {
     let token = getCookie("token");
     if(type != "login"){
-        // sendToken();
         axios.defaults.headers.common['token'] = token;
     }else{
         axios.defaults.headers.common['token'] = "";
     }
-	
+
+    NProgress.start();  //数据加载时出现进度条
     return new Promise((resolve, reject) => {
-        axios.post(url, data).then((res) => {            
+        axios.post(url, data).then((res) => {
+            NProgress.done();    //路由切换完成和数据加载完成后去掉进度条
             if(res.data.code == 401){
                 router.push('/login');
             }else{
@@ -60,7 +51,7 @@ export function apiPost(url, data, type) {
         }).catch((res) => {
             console.log('error', res);
         });
-    });
+    });  
 }
 
 /* 
@@ -108,5 +99,5 @@ export function alertMsg(str){
 export function msgFoo(str, foo){
     store.dispatch('alertCallBack', true);
     store.dispatch('alertMsg', str);
-    setTimeout(foo,3000);
+    setTimeout(foo,2000);
 }

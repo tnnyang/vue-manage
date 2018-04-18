@@ -4,7 +4,7 @@
         <h2 class="text-center">爱下户</h2>
         <input type="text" class="form-control user" placeholder="请输入用户名" v-model="userName">
         <input type="password" class="form-control pwd" placeholder="请输入密码" v-model="pwd" @keyup.enter="login">
-        <button class="btn btn-lg btn-block yellow-bg" type="button" @click="login">登录</button>
+        <button class="btn btn-lg btn-block yellow-bg" type="button" @click="login" ref="login">登录</button>
       </div>
     </div>
 </template>
@@ -28,14 +28,19 @@ export default {
         util.alertMsg("请输入密码");
         return false;
       }else{
+        this.$refs.login.innerHTML = "登录中...";
+        this.$refs.login.disabled = true;
+        
         util.apiPost(api + "/user/login?username=" + this.userName + "&password=" + this.pwd, "", "login").then(res => {
           if(res.code == 0){
             util.setCookie("token", res.data.token);
             this.$router.push("/index");
+            this.$refs.login.innerHTML = "登录";
+            this.$refs.login.removeAttribute('disabled');            
           }else{
             util.alertMsg(res.msg);
           }
-        });
+        });      
       }      
     }
   }

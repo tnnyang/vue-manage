@@ -68,7 +68,7 @@ export default {
       pageSize: 13,
       pageIndex: 1,
       total: 0,
-      pageShow: true,
+      pageShow: false,
       recordShow: true,
       noDataShow: false
     }

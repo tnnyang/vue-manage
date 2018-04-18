@@ -69,7 +69,7 @@ export default new Router({
             {
                 path: '/waitingXiaHuDetail/:id',
                 component: resolve => require(['../components/waitingXiaHuDetail'], resolve)
-            }
+            }          
         ]
 	}
   ]

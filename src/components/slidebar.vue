@@ -17,7 +17,7 @@
 .order{background-image:url(../assets/images/order.png);}
 .waiting{background-image:url(../assets/images/waiting.png);}
 .over{background-image:url(../assets/images/over.png);}
-.nav-sidebar > li{padding:15px 20px 15px 80px;cursor:pointer;font-size:16px;background-repeat:no-repeat;background-position:40px center;background-size:26px 26px;}
+.nav-sidebar > li{padding:15px 20px 25px 80px;cursor:pointer;font-size:16px;background-repeat:no-repeat;background-position:40px center;background-size:26px 26px;}
 .nav-sidebar > li:hover,
 .nav-sidebar > .router-link-active,
 .nav-sidebar > .router-link-active:hover,

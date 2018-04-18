@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="showAlert">
-      <div class="mask mask-white"></div>
+      <!-- <div class="mask mask-white"></div> -->
       <div class="validatePopTips vetically">
         <div class="tips-context">
           <!-- <p>提示</p> -->
@@ -39,19 +39,16 @@ export default {
       if(this.showAlert){      
         setTimeout(() => {
           this.$store.dispatch('showAlert', false);
-        },3000);
+        },2000);
       }
     },
     'alertCallBack'() {  //带回调的弹窗
       if(this.alertCallBack){     
         setTimeout(() => {
           this.$store.dispatch('alertCallBack', false);
-        },3000);        
+        },2000);        
       }
     }
   }
 }
 </script>
-<style scoped>
-
-</style>

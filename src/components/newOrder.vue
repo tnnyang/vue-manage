@@ -4,7 +4,7 @@
     <div class="row placeholders customer-inline">
         <div class="col-sm-4" style="width:35%;">
           <label>下户预约时间</label>
-          <input type="text" class="form-control datetime" v-model="reserveDate" @click="chooseDate">
+          <input type="text" class="form-control datetime" id="orderDate" v-model="reserveDate" @click="orderDate">
         </div>
         <div class="col-sm-4" style="padding:0;width:32%;">
           <label>小区名称</label>
@@ -115,7 +115,7 @@ export default {
         //   });
         // }); 
       });
-    })
+    });
   },
   methods: {
     createOrder(){
@@ -131,11 +131,13 @@ export default {
       }else if(!this.modelType){
         util.alertMsg("请输入下户类型");
         return false;
+      }else if(!this.userlocation.lng || !this.userlocation.lat){
+        util.alertMsg("请选择地址坐标");
+        return false;
       }else{
         let params = {reserveDate: this.reserveDate, community: this.community, province: this.cityInfo.province, city: this.cityInfo.city, county: this.cityInfo.district, address: this.address, longitude: this.userlocation.lng, latitude: this.userlocation.lat, modelType: this.modelType};
-        console.log(params);
+
         util.apiPost(api + "/customer/createOrder", params).then(res => {
-          console.log(res);
           if(res.code == 0){
             this.reserveDate = "";
             this.community = "";
@@ -149,15 +151,16 @@ export default {
         });
       }      
     },
-    chooseDate(){
+    orderDate(){
       laydate({
+        elem: '#orderDate',
         istime: true,
         format: 'YYYY-MM-DD hh:mm:ss', 
         choose: (dateTime) => {
           this.reserveDate = dateTime;
         }
       });
-    }    
+    }
   },
   components: {
     top,

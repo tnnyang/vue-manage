@@ -3,11 +3,11 @@
     <h3 class="main-title">订单记录</h3>
     <form class="form-inline">
       <div class="form-group" style="width:22.5%;">
-        <input type="text" class="form-control datetime" style="width:100%;" v-model="beginTime" @click="chooseBeginDate">
+        <input type="text" class="form-control datetime" style="width:100%;" id="beginTime" v-model="beginTime" @click="chooseBeginTime">
       </div>
       <div class="form-group" style="margin-left:5px;width:25%;">
         <label>至</label>
-        <input type="text" class="form-control datetime" style="margin-left:5px;width:90%;" v-model="endTime" @click="chooseEndDate">
+        <input type="text" class="form-control datetime" style="margin-left:5px;width:90%;" id="endTime" v-model="endTime" @click="chooseEndTime">
       </div>
       <div class="form-group" style="width:15%;">
         <input type="text" class="form-control" placeholder="请输入小区名" v-model="community" style="width:100%;">
@@ -44,7 +44,7 @@
             <td>{{item.orderNo}}</td>
             <td>{{item.orderCustCompoundName}}</td>
             <td>{{item.createTime}}</td>
-            <td>0</td>
+            <td>{{item.modelPrice}}</td>
             <td>{{item.modelName}}</td>
             <td>
               <span v-if="item.orderState == 1">新建</span>
@@ -95,16 +95,16 @@ export default {
       pageSize: 13,
       pageIndex: 1,
       total: 0,
-      pageShow: true,
+      pageShow: false,
       recordShow: true,
       noDataShow: false
     }
   },
-  watch: {
-    '$route' () {
-      this.getOrderRecord();
-    }
-  },
+  // watch: {
+  //   '$route' () {
+  //     this.getOrderRecord();
+  //   }
+  // },
   mounted () {
     this.$nextTick(function(){
       this.getOrderRecord();
@@ -146,8 +146,9 @@ export default {
       this.getOrderRecord();
       this.$store.dispatch('curPage');
     },
-    chooseBeginDate(){
+    chooseBeginTime(){
       laydate({
+        elem: '#beginTime',
         istime: true,
         format: 'YYYY-MM-DD hh:mm:ss', 
         choose: (dateTime) => {
@@ -155,8 +156,9 @@ export default {
         }
       });
     },
-    chooseEndDate(){
+    chooseEndTime(){
       laydate({
+        elem: '#endTime',
         istime: true,
         format: 'YYYY-MM-DD hh:mm:ss', 
         choose: (dateTime) => {

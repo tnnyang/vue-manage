@@ -54,7 +54,7 @@
 	  	<div class="col-sm-6 pull-right index-announcement">
 	      <h3>公告</h3>
 	      <ul>
-	      	<li v-for="item in announcement"><router-link to="/announcementDetail">{{item.title}}</router-link></li>
+	      	<li v-for="item in announcement">{{item.title}}</li>
 	      </ul>
       	</div>
 	  </div>
@@ -78,7 +78,7 @@
 		          <td>{{item.orderNo}}</td>
 		          <td>{{item.orderCustCompoundName}}</td>
 		          <td>{{item.createTime}}</td>
-		          <td>0</td>
+		          <td>{{item.modelPrice}}</td>
 		          <td>{{item.modelName}}</td>
 		          <td>
 						<span v-if="item.orderState == 1">新建</span>
@@ -129,7 +129,7 @@ export default {
 		}
 	},
 	mounted(){
-		this.$nextTick(function(){
+		this.$nextTick(function(){			
 			util.apiPost(api + "/customer/getCustomerOrderCount").then(res => {
 				if(res.code == 0){
 					let response = res.data;
@@ -141,7 +141,7 @@ export default {
 			});
 
 			util.apiPost(api + "/customer/getOrderRecord", {pageSize: this.pageSize, pageIndex: this.pageIndex}).then(res => {
-				if(res.code == 0){
+				if(res.code == 0){					
 					let response = res.data;
 					this.orderRecord = response.dataList;
 

@@ -1,11 +1,11 @@
 import types from './types'
 
 const state = {
-	showAlert: false,
-	alertMsg: "",
-	alertCallBack: false,
-	curPage: false,
-	editPwdShow: false
+	showAlert: false,      //公共弹窗
+	alertMsg: "",          //公共弹窗的内容
+	alertCallBack: false,  //带有回调函数的公共弹窗
+	curPage: false,        //分页初始化
+	editPwdShow: false     //修改密码弹窗
 }
 
 const getters = {
@@ -18,10 +18,10 @@ const getters = {
 
 const actions = {
 	showAlert({commit}, status){
-		commit(types.SHOW_ALERT, status)
+		commit(types.SHOWALERT, status)
 	},
 	alertMsg({commit}, str) {
-        commit(types.ALERT_MSG, str)
+        commit(types.ALERTMSG, str)
     },
 	alertCallBack({commit}, str) {
         commit(types.ALERTCALLBACK, str)
@@ -35,10 +35,10 @@ const actions = {
 }
 
 const mutations = {
-	[types.SHOW_ALERT](state, status){
+	[types.SHOWALERT](state, status){
 		state.showAlert = status
 	},
-	[types.ALERT_MSG](state, str){
+	[types.ALERTMSG](state, str){
 		state.alertMsg = str
 	},
 	[types.ALERTCALLBACK](state, status){
@@ -49,7 +49,7 @@ const mutations = {
 	},
 	[types.EDITPWDSHOW](state, status){
 		state.editPwdShow = status
-	},
+	}
 }
 
 export default {	
