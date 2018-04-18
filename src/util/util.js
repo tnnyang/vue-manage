@@ -1,5 +1,4 @@
-// const domain = 'http://10.1.0.219:7073/sv_pc/api';
-const domain = 'http://testxiahu.91zhaiquan.net:8085/sv_pc/api';
+const domain = 'http://127.0.0.1:7073/sv_pc/api';
 import axios from 'axios'
 import store from '../vuex'
 import router from '../router'
