@@ -1,4 +1,6 @@
-const domain = 'http://127.0.0.1:7073/sv_pc/api';
+// const domain = 'http://10.1.0.219:7073/sv_pc/api';
+// const domain = 'http://testxiahu.91zhaiquan.net:8085/sv_pc/api';
+const domain = 'http://www.ixiahu.com:8085/sv_pc/api';
 import axios from 'axios'
 import store from '../vuex'
 import router from '../router'
@@ -39,14 +41,13 @@ export function apiPost(url, data, type) {
 
     NProgress.start();  //数据加载时出现进度条
     return new Promise((resolve, reject) => {
-        axios.post(url, data, {timeout: 5000}).then((res) => {    //设置超时时间5秒
+        axios.post(url, data, {timeout: 5000}).then((res) => {    //设置请求超时时间5秒
             NProgress.done();    //路由切换完成和数据加载完成后去掉进度条
             if(res.data.code == 401){
                 router.push('/login');
             }else{
                 resolve(res.data);
-            }
-            
+            }            
         }).catch((res) => {
             console.log('error', res);
         });

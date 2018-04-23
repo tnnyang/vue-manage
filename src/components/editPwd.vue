@@ -82,6 +82,7 @@ export default {
       }     
     },
     cancel(){
+      this.$refs.error.innerHTML = '';
       this.$store.dispatch('editPwdShow', false);
     }
   },

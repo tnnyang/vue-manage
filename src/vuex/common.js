@@ -9,7 +9,7 @@ const state = {
 }
 
 const getters = {
-	showAlert: state => state.showAlert,
+	showAlert: state => state.showAlert,    //这是es6的写法，箭头函数之前的state是参数的意思，如果有两个参数就要加上括号了，就应该写成(state, 参数2)，箭头函数之后的语句如果直接作为返回值的话，是可以省去花括号的。如果不是es6的话，写法为function(state){return state.showAlert}
 	alertMsg: state => state.alertMsg,
 	alertCallBack: state => state.alertCallBack,
 	curPage: state => state.curPage,
