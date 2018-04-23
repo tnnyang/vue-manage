@@ -96,6 +96,8 @@ export default {
             util.msgFoo("添加成功", () => {
               this.$router.push("/childAccountDetail");
             });
+          }else{
+            util.alertMsg(res.msg);
           }
         });
       }

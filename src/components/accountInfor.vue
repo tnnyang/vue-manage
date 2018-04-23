@@ -88,6 +88,8 @@ export default {
             util.msgFoo(res.msg, () => {
               this.$router.push("/index");
             });
+          }else{
+            util.alertMsg(res.msg);
           }
         });
       }      

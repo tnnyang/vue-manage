@@ -147,6 +147,8 @@ export default {
             util.msgFoo(res.msg, () => {
               this.$router.push("/orderRecord");
             });
+          }else{
+            util.alertMsg(res.msg);
           }
         });
       }      

@@ -39,6 +39,8 @@ export default {
             this.$refs.login.removeAttribute('disabled');            
           }else{
             util.alertMsg(res.msg);
+            this.$refs.login.innerHTML = "登录";
+            this.$refs.login.removeAttribute('disabled');
           }
         });      
       }      
