@@ -15,7 +15,7 @@ module.exports = {
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
@@ -43,7 +43,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/',    //如果想发布在github上并能访问网站，那么就把这里改为assetsPublicPath: '/你的站点文件夹/'，比如assetsPublicPath: '/AiXiaHuManage/'，同时github的博客tnnyang.github.io中也要有该文件夹名称AiXiaHuManage，如果是模拟的假数据，那么还要在假数据的请求路径前加上/AiXiaHuManage/
 
     /**
      * Source Maps
