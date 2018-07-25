@@ -4,11 +4,11 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
 		path: '/',
-		redirect: '/login',
-		component: resolve => require(['@/components/login'], resolve)
+		redirect: '/index'
 	},
 	{
 		path: '/login',
@@ -71,6 +71,14 @@ export default new Router({
                 component: resolve => require(['../components/waitingXiaHuDetail'], resolve)
             }          
         ]
-	}
+	},
+    {
+        path: '/announcementDetail/:id',
+        component: resolve => require(['@/components/announcementDetail'], resolve)
+    },
+    {
+        path: '/mock',
+        component: resolve => require(['@/components/mock'], resolve)
+    }
   ]
 })

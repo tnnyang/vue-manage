@@ -1,4 +1,4 @@
-const domain = '127.0.0.1:8085/sv_pc/api';
+const domain = '../static/data/data.json';
 import axios from 'axios'
 import store from '../vuex'
 import router from '../router'
@@ -9,16 +9,13 @@ export default {
   baseUrl: domain
 }
 
-//导航钩子  判断是否登陆
+//使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
-    if(getCookie("token")){       
+    const token = getCookie("token")
+    if(!token && to.path !== '/login'){
+        next('/login');
+    }else {
         next();
-    }else{
-        if(to.path == '/login'){  //如果是登录页面路径，就直接next()
-            next();
-        }else{     //否则就跳转到登录
-            next('/login');
-        }
     }
     NProgress.start();    //路由切换时出现进度条
 })
@@ -28,18 +25,30 @@ router.beforeEach((to, from, next) => {
 //   NProgress.done();
 // });
 
+// router.beforeRouteLeave((to, from, next) => {
+//     console.log(1);
+// })
+
+// 添加请求拦截器
+axios.interceptors.request.use((config) =>{
+     config.headers['token'] = getCookie("token");
+     return config;
+},function(error) {
+    return Promise.reject(error);
+});
+
 //封装axios post请求
-export function apiPost(url, data, type) {
-    let token = getCookie("token");
-    if(type != "login"){
-        axios.defaults.headers.common['token'] = token;
-    }else{
-        axios.defaults.headers.common['token'] = "";
-    }
+export function apiPost(url, data = {}, type) {
+    // let token = getCookie("token");
+    // if(type != "login"){
+    //     axios.defaults.headers.common['token'] = token;
+    // }else{
+    //     axios.defaults.headers.common['token'] = "";
+    // }
 
     NProgress.start();  //数据加载时出现进度条
     return new Promise((resolve, reject) => {
-        axios.post(url, data, {timeout: 5000}).then((res) => {    //设置请求超时时间5秒
+        axios.get(url, data, {timeout: 5000}).then((res) => {    //设置请求超时时间5秒
             NProgress.done();    //路由切换完成和数据加载完成后去掉进度条
             if(res.data.code == 401){
                 router.push('/login');
@@ -47,7 +56,7 @@ export function apiPost(url, data, type) {
                 resolve(res.data);
             }            
         }).catch((res) => {
-            console.log('error', res);
+            console.log('error:', res);
         });
     });  
 }
@@ -98,4 +107,21 @@ export function msgFoo(str, foo){
     store.dispatch('alertCallBack', true);
     store.dispatch('alertMsg', str);
     setTimeout(foo,2000);
+}
+//升序排列
+export function sortByAsc(array, key){
+    return array.sort((a, b) => {
+        var x = a[key];
+        var y = b[key];
+        return x - y;
+        // return ((x < y) ? -1 : (x > y) ? 1 : 0);
+    });
+}
+//降序排列
+export function sortByDesc(array, key){
+    return array.sort((a, b) => {
+        var x = a[key];
+        var y = b[key];
+        return y - x;
+    });
 }
