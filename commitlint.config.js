@@ -17,6 +17,7 @@
  *   - scope：一个可选的修改范围。用于标识此次提交主要涉及到代码中哪个模块。
  *   - Subject：一句话描述此次提交的主要内容，做到言简意赅
  */
+
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
